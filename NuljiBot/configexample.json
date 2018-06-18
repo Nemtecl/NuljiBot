@@ -1,0 +1,10 @@
+﻿{
+  "Token": "",
+  "Prefix": "!",
+  "CurrentGame": "les gens coder",
+  "JoinedMessage": {
+    "Start": "Bienvenue sur le serveur ",
+    "End": " ! :heart:"
+  },
+  "LeftMessage": " a quitté le serveur ! :wave:"
+}
