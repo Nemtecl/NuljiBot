@@ -1,17 +1,16 @@
-﻿using Discord;
-using Discord.Commands;
+﻿using Discord.Commands;
 using NuljiBot.Services;
 using System.Threading.Tasks;
 
 namespace NuljiBot.Modules
 {
-    [Name("Chat")]
-    [Summary("Module de chat")]
-    public sealed class ChatModule : NuljiModule
+    [Name("Game")]
+    [Summary("Contient les commandes de mini-jeu")]
+    public sealed class GameModule : NuljiModule
     {
-        private readonly ChatService _service;
+        private readonly GameService _service;
 
-        public ChatModule(ChatService service)
+        public GameModule(GameService service)
         {
             _service = service;
             _service.SetParentModule(this);
@@ -43,15 +42,5 @@ namespace NuljiBot.Modules
             _service.RpsAsync(Context.Channel, Context.User, choice);
             await Task.Delay(0);
         }
-
-        [Command("Clear")]
-        [Remarks("!clear [n]")]
-        [Summary("Supprime [n] messages du channel courant")]
-        [RequireUserPermission(GuildPermission.ManageMessages)]
-        public async Task ClearMessages([Remainder] int n = 0)
-        {
-            await _service.ClearMessagesAsync(Context.Guild, Context.Channel, Context.User, n);
-        }
-
     }
 }

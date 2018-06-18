@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace NuljiBot.DataReader
+namespace NuljiBot.Helpers
 {
-    public class JsonReader
+    public static class JsonHelper
     {
         internal class DataType
         {
