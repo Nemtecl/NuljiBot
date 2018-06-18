@@ -1,14 +1,15 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using NuljiBot.Helpers;
 using System;
 using System.Threading.Tasks;
 
 namespace NuljiBot.Services
 {
     /// <summary>
-    /// Objet de prise en charge des commandes de chat
+    /// Objet de prise en charge des commandes de mini-jeu
     /// </summary>
-    public sealed class ChatService : NuljiService
+    public sealed class GameService : NuljiService
     {
         /// <summary>
         /// Méthode de prise en charge de la commande flipcoin
@@ -75,10 +76,9 @@ namespace NuljiBot.Services
                 return;
             }
 
-            string[] rps = new string[] { "Pierre", "Feuille", "Ciseaux" };
             bool exists = false;
 
-            foreach (var choice in rps)
+            foreach (var choice in RpsHelper.PossibleValues)
             {
                 if (choice.ToLower().Equals(userChoice.ToLower()))
                 {
@@ -94,7 +94,7 @@ namespace NuljiBot.Services
 
             // Comportement
             Random rnd = new Random();
-            string botChoice = rps[rnd.Next(0, 3)];
+            string botChoice = RpsHelper.PossibleValues[rnd.Next(0, 3)];
 
             if (botChoice.ToLower().Equals(userChoice.ToLower()))
             {
@@ -103,69 +103,19 @@ namespace NuljiBot.Services
             }
 
             string sChoice = "";
-            if (userChoice.ToLower().Equals(rps[0].ToLower()))
+            if (userChoice.ToLower().Equals(RpsHelper.Rock))
             {
-                sChoice += $"{user.Mention} a choisi ***{rps[0]}***, je choisi ***{botChoice}***";
-                if (botChoice.ToLower().Equals(rps[1].ToLower()))
-                    sChoice += $"\nJ'ai gagné ! :hand_splayed:";
-                else
-                    sChoice += $"\nTu as gagné ! :punch:";
+                sChoice += RpsHelper.ChoiceChecker[RpsHelper.Rock](user, botChoice);
             }
-            else if (userChoice.ToLower().Equals(rps[1].ToLower()))
+            else if (userChoice.ToLower().Equals(RpsHelper.Paper))
             {
-                sChoice += $"{user.Mention} a choisi ***{rps[1]}***, je choisi ***{botChoice}***";
-                if (botChoice.ToLower().Equals(rps[2].ToLower()))
-                    sChoice += $"\nJ'ai gagné ! :v:";
-                else
-                    sChoice += $"\nTu as gagné ! :hand_splayed:";
+                sChoice += RpsHelper.ChoiceChecker[RpsHelper.Paper](user, botChoice);
             }
             else
             {
-                sChoice += $"{user.Mention} a choisi ***{rps[2]}***, je choisi ***{botChoice}***";
-                if (botChoice.ToLower().Equals(rps[0].ToLower()))
-                    sChoice += $"\nJ'ai gagné ! :punch:";
-                else
-                    sChoice += $"\nTu as gagné ! :v:";
+                sChoice += RpsHelper.ChoiceChecker[RpsHelper.Scissors](user, botChoice);
             }
             Reply(sChoice);
-        }
-
-        /// <summary>
-        /// Méthode de prise en charge de la commande clear
-        /// </summary>
-        /// <param name="guild"></param>
-        /// <param name="channel"></param>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public async Task ClearMessagesAsync(IGuild guild, IMessageChannel channel, IUser user, int n)
-        {
-            var eb = new EmbedBuilder();
-            eb.WithTitle("Clear command");
-            eb.WithDescription("Supprime [n] messages du channel courrant");
-            eb.AddField("Usage", "!clear [n]");
-            eb.AddField("Require", "Permission de gestion des messages");
-
-            // Vérification des paramètres
-            if (n == 0)
-            {
-                Reply("", eb);
-                return;
-            }
-
-            // Vérifications des permissions
-            var guildUser = await guild.GetUserAsync(user.Id);
-            if (!guildUser.GetPermissions(channel as ITextChannel).ManageChannel)
-            {
-                Reply($"{user.Mention} Vous n'avez pas les permissions pour la gestion des messages");
-                Reply("", eb);
-                return;
-            }
-
-            // Suppression
-            var messages = await channel.GetMessagesAsync(n).FlattenAsync();
-            await (channel as SocketTextChannel).DeleteMessagesAsync(messages);
-
-            Reply($"{user.Mention} Suppression des messages ...");
         }
     }
 }
