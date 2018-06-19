@@ -39,7 +39,8 @@ namespace NuljiBot
 
             services
                 .AddSingleton<GameService>()
-                .AddSingleton<AdminService>();
+                .AddSingleton<AdminService>()
+                .AddSingleton<InformationService>();
 
             return services.BuildServiceProvider();
         }
