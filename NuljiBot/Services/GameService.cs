@@ -1,8 +1,6 @@
 ﻿using Discord;
-using Discord.WebSocket;
 using NuljiBot.Helpers;
 using System;
-using System.Threading.Tasks;
 
 namespace NuljiBot.Services
 {
