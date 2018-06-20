@@ -1,4 +1,5 @@
 ﻿using Discord;
+using Humanizer;
 using System;
 using System.Diagnostics;
 
@@ -24,7 +25,8 @@ namespace NuljiBot.Services
         public void UptimeAsync(IMessageChannel channel, IUser user)
         {
             var uptime = DateTime.Now - Process.GetCurrentProcess().StartTime;
-            Reply($"{user.Mention} {uptime}");
+            var t = uptime.Humanize();
+            Reply($"{user.Mention} {uptime.Humanize()}");
         }
     }
 }
