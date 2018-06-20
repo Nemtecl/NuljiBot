@@ -38,7 +38,7 @@ namespace NuljiBot.Services
             }
 
             // Suppression
-            var messages = await channel.GetMessagesAsync(n).FlattenAsync();
+            var messages = await channel.GetMessagesAsync(n + 1).FlattenAsync();
             await (channel as SocketTextChannel).DeleteMessagesAsync(messages);
 
             Reply($"{user.Mention} Suppression des messages ...");
