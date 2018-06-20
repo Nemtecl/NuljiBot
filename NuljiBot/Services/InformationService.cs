@@ -1,4 +1,6 @@
 ﻿using Discord;
+using System;
+using System.Diagnostics;
 
 namespace NuljiBot.Services
 {
@@ -14,9 +16,15 @@ namespace NuljiBot.Services
         /// </summary>
         /// <param name="channel"></param>
         /// <param name="user"></param>
-        public void Help(IMessageChannel channel, IUser user)
+        public void HelpAsync(IMessageChannel channel, IUser user)
         {
             Reply($"{user.Mention} Not implemented yet ! :middle_finger: ");
+        }
+
+        public void UptimeAsync(IMessageChannel channel, IUser user)
+        {
+            var uptime = DateTime.Now - Process.GetCurrentProcess().StartTime;
+            Reply($"{user.Mention} {uptime}");
         }
     }
 }

@@ -19,7 +19,16 @@ namespace NuljiBot.Modules
         [Summary("Commande d'aide")]
         public async Task Help()
         {
-            _service.Help(Context.Channel, Context.User);
+            _service.HelpAsync(Context.Channel, Context.User);
+            await Task.Delay(0);
+        }
+
+        [Command("Uptime")]
+        [Remarks("!uptime")]
+        [Summary("Retourne le temps d'exécution du bot")]
+        public async Task Uptime()
+        {
+            _service.UptimeAsync(Context.Channel, Context.User);
             await Task.Delay(0);
         }
     }
