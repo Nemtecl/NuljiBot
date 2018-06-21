@@ -1,6 +1,7 @@
 ﻿using Discord;
 using NuljiBot.Helpers;
 using System;
+using System.Globalization;
 
 namespace NuljiBot.Services
 {
@@ -34,11 +35,18 @@ namespace NuljiBot.Services
             // Vérification des paramètres
             if (n == 0)
             {
-                var eb = new EmbedBuilder();
-                eb.WithTitle("Roll command");
-                eb.WithDescription("Lancer de [n] dés");
-                eb.AddField("Usage", "!roll [n]");
-                Reply("", eb);
+                var builder = new EmbedBuilder()
+                    .WithTitle("Roll command")
+                    .WithDescription("Lancer de [n] dés")
+                    .AddField("Usage", "!roll [n]")
+                    .WithFooter(footer =>
+                    {
+                        footer
+                            .WithText($"Développé par {JsonHelper.GetAuthorName()} | " +
+                            $"{DateTime.Now.ToString("f", CultureInfo.CreateSpecificCulture("fr-FR"))}")
+                            .WithIconUrl(JsonHelper.GetAuthorIconUrl());
+                    });
+                Reply("", builder);
                 return;
             }
 

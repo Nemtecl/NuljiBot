@@ -1,6 +1,8 @@
 ﻿using Discord;
+using Humanizer;
 using System;
 using System.Diagnostics;
+using NuljiBot.Helpers;
 
 namespace NuljiBot.Services
 {
@@ -24,7 +26,17 @@ namespace NuljiBot.Services
         public void UptimeAsync(IMessageChannel channel, IUser user)
         {
             var uptime = DateTime.Now - Process.GetCurrentProcess().StartTime;
-            Reply($"{user.Mention} {uptime}");
+            //string s = uptime.Days + "jours " + uptime.v
+            var builder = new EmbedBuilder()
+                .WithTitle("Uptime")
+                .WithDescription($"{uptime.Humanize()}")
+                .WithFooter(footer =>
+                {
+                    footer
+                        .WithText($"{JsonHelper.GetAuthorName()} | Lancé pour la dernière fois le <insérer une date>")
+                        .WithIconUrl(JsonHelper.GetAuthorIconUrl());
+                });
+            Reply("", builder);
         }
     }
 }

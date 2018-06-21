@@ -6,19 +6,32 @@ namespace NuljiBot.Helpers
 {
     public static class JsonHelper
     {
-        internal class DataType
+        private class DataType
         {
             public string Token { get; set; }
             public string Prefix { get; set; }
             public string CurrentGame { get; set; }
             public JoinedMessage JoinedMessage { get; set; }
             public string LeftMessage { get; set; }
+            public EmbedBuilder EmbedBuilder { get; set; }
         }
 
-        internal class JoinedMessage
+        private class JoinedMessage
         {
             public string Start { get; set; }
             public string End { get; set; }
+        }
+
+        private class EmbedBuilder
+        {
+            public Author Author { get; set; }
+            public string Color { get; set; }
+        }
+
+        private class Author
+        {
+            public string Name { get; set; }
+            public string IconUrl { get; set; }
         }
 
         public static string GetToken()
@@ -49,6 +62,18 @@ namespace NuljiBot.Helpers
         {
             DataType data = JsonConvert.DeserializeObject<DataType>(File.ReadAllText("config.json"));
             return data.LeftMessage;
+        }
+
+        public static string GetAuthorIconUrl()
+        {
+            DataType data = JsonConvert.DeserializeObject<DataType>(File.ReadAllText("config.json"));
+            return data.EmbedBuilder.Author.IconUrl;
+        }
+
+        public static string GetAuthorName()
+        {
+            DataType data = JsonConvert.DeserializeObject<DataType>(File.ReadAllText("config.json"));
+            return data.EmbedBuilder.Author.Name;
         }
     }
 }
