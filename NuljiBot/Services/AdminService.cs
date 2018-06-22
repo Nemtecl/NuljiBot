@@ -16,10 +16,10 @@ namespace NuljiBot.Services
         public async Task ClearMessagesAsync(IGuild guild, IMessageChannel channel, IUser user, int n)
         {
             var eb = new EmbedBuilder();
-            eb.WithTitle("Clear command");
-            eb.WithDescription("Supprime [n] messages du channel courrant");
-            eb.AddField("Usage", "!clear [n]");
-            eb.AddField("Require", "Permission de gestion des messages");
+            eb.WithTitle("Clear command")
+                .WithDescription("Supprime [n] messages du channel courrant")
+                .AddField("Usage", "!clear [n]")
+                .AddField("Require", "Permission de gestion des messages");
 
             // Vérification des paramètres
             if (n == 0)

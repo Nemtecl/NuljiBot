@@ -1,6 +1,7 @@
 ﻿using Discord;
 using NuljiBot.Helpers;
 using System;
+using System.Globalization;
 
 namespace NuljiBot.Services
 {
@@ -34,11 +35,18 @@ namespace NuljiBot.Services
             // Vérification des paramètres
             if (n == 0)
             {
-                var eb = new EmbedBuilder();
-                eb.WithTitle("Roll command");
-                eb.WithDescription("Lancer de [n] dés");
-                eb.AddField("Usage", "!roll [n]");
-                Reply("", eb);
+                var builder = new EmbedBuilder()
+                    .WithTitle("Roll command")
+                    .WithDescription("Lancer de [n] dés")
+                    .AddField("Usage", "!roll [n]")
+                    .WithCurrentTimestamp()
+                    .WithFooter(footer =>
+                    {
+                        footer
+                            .WithText($"Commande lancée par {user.Username}")
+                            .WithIconUrl(user.GetAvatarUrl());
+                    });
+                Reply("", builder);
                 return;
             }
 
@@ -61,11 +69,17 @@ namespace NuljiBot.Services
         public void RpsAsync(IMessageChannel channel, IUser user, string userChoice)
         {
 
-            var eb = new EmbedBuilder();
-            eb.WithTitle("Rps command");
-            eb.WithDescription("Pierre Feuille Ciseaux");
-            eb.AddField("Usage", "!rps [choice]");
-            eb.AddField("Parameters", "Pierre :punch:\nFeuille :hand_splayed:\nCiseaux :v:");
+            var eb = new EmbedBuilder()
+                .WithTitle("Rps command")
+                .WithDescription("Pierre Feuille Ciseaux")
+                .WithFooter(footer =>
+                {
+                    footer
+                        .WithText($"Commande lancée par {user.Username}")
+                        .WithIconUrl(user.GetAvatarUrl());
+                })
+                .AddField("Usage", "!rps [choice]")
+                .AddField("Parameters", "Pierre :punch:\nFeuille :hand_splayed:\nCiseaux :v:");
 
             // Vérification des paramètres
             if (userChoice == null)
