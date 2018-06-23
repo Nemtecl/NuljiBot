@@ -35,17 +35,12 @@ namespace NuljiBot.Services
             // Vérification des paramètres
             if (n == 0)
             {
-                var builder = new EmbedBuilder()
+
+                var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
                     .WithTitle("Roll command")
                     .WithDescription("Lancer de [n] dés")
-                    .AddField("Usage", "!roll [n]")
-                    .WithCurrentTimestamp()
-                    .WithFooter(footer =>
-                    {
-                        footer
-                            .WithText($"Commande lancée par {user.Username}")
-                            .WithIconUrl(user.GetAvatarUrl());
-                    });
+                    .AddField("Usage", "!roll [n]");
+
                 Reply("", builder);
                 return;
             }
@@ -69,22 +64,16 @@ namespace NuljiBot.Services
         public void RpsAsync(IMessageChannel channel, IUser user, string userChoice)
         {
 
-            var eb = new EmbedBuilder()
+            var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
                 .WithTitle("Rps command")
                 .WithDescription("Pierre Feuille Ciseaux")
-                .WithFooter(footer =>
-                {
-                    footer
-                        .WithText($"Commande lancée par {user.Username}")
-                        .WithIconUrl(user.GetAvatarUrl());
-                })
                 .AddField("Usage", "!rps [choice]")
                 .AddField("Parameters", "Pierre :punch:\nFeuille :hand_splayed:\nCiseaux :v:");
 
             // Vérification des paramètres
             if (userChoice == null)
             {
-                Reply("", eb);
+                Reply("", builder);
                 return;
             }
 
@@ -100,7 +89,7 @@ namespace NuljiBot.Services
 
             if (!exists)
             {
-                Reply("", eb);
+                Reply("", builder);
                 return;
             }
 

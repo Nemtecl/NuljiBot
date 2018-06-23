@@ -11,6 +11,7 @@ namespace NuljiBot.Helpers
             public string Token { get; set; }
             public string Prefix { get; set; }
             public string CurrentGame { get; set; }
+            public string Culture { get; set; }
             public JoinedMessage JoinedMessage { get; set; }
             public string LeftMessage { get; set; }
             public EmbedBuilder EmbedBuilder { get; set; }
@@ -50,6 +51,12 @@ namespace NuljiBot.Helpers
         {
             DataType data = JsonConvert.DeserializeObject<DataType>(File.ReadAllText("config.json"));
             return data.CurrentGame;
+        }
+
+        public static string GetCulture()
+        {
+            DataType data = JsonConvert.DeserializeObject<DataType>(File.ReadAllText("config.json"));
+            return data.Culture;
         }
 
         public static List<string> GetJoinedMessage()
