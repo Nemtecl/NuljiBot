@@ -1,17 +1,18 @@
 ﻿{
-    "token": "<insérer le token>",
-    "prefix": "$",
-    "currentGame": "les gens coder",
+  "token": "<insérer le token>",
+  "prefix": "$",
+  "currentGame": "les gens coder",
+  "culture": "fr-FR",
   "joinedMessage": {
     "start": "Bienvenue sur le serveur ",
     "end": " ! :heart:"
   },
-    "leftMessage": " a quitté le serveur ! :wave:",
-    "embedBuilder": {
-        "author": {
-            "name": "Clément Drouin",
-            "iconUrl": "https://cdn.discordapp.com/avatars/158971623716814848/f942a080014ff736edc423b989d9ad39.png"
-        },
-        "color": "<TODO>"
-    }
+  "leftMessage": " a quitté le serveur ! :wave:",
+  "embedBuilder": {
+    "author": {
+      "name": "Clément Drouin",
+      "iconUrl": "https://cdn.discordapp.com/avatars/158971623716814848/f942a080014ff736edc423b989d9ad39.png"
+    },
+    "color": "<TODO>"
+  }
 }

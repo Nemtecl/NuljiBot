@@ -3,7 +3,6 @@ using Humanizer;
 using System;
 using System.Diagnostics;
 using NuljiBot.Helpers;
-using System.Globalization;
 
 namespace NuljiBot.Services
 {
@@ -12,8 +11,6 @@ namespace NuljiBot.Services
     /// </summary>
     public sealed class InformationService : NuljiService
     {
-        // todo : help, github, futur site + commandes info dyno
-
         /// <summary>
         /// Méthode de prise en charge de la commande help
         /// </summary>
@@ -24,20 +21,27 @@ namespace NuljiBot.Services
             Reply($"{user.Mention} Not implemented yet ! :middle_finger: ");
         }
 
+        /// <summary>
+        /// Méthode de prise en charge de la commande uptime
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="user"></param>
         public void UptimeAsync(IMessageChannel channel, IUser user)
         {
             var processStartTime = Process.GetCurrentProcess().StartTime;
             TimeSpan uptime = DateTime.Now - processStartTime;
-            var builder = new EmbedBuilder()
-                .WithTitle("Uptime")
-                .WithDescription($"{uptime.Humanize()}")
-                .WithFooter(footer =>
-                {
-                    footer
-                        .WithText($"Développé par {JsonHelper.GetAuthorName()} " +
-                        $"| Actif depuis {processStartTime.ToString("f", CultureInfo.CreateSpecificCulture("fr-FR"))}")
-                        .WithIconUrl(JsonHelper.GetAuthorIconUrl());
-                });
+
+            string description = "";
+            if (uptime.Days != 0)
+                description += $"{uptime.Days} jour" + (uptime.Days == 1 ? "" : "s") + ", ";
+            if (uptime.Hours != 0)
+                description += $"{uptime.Hours} heure" + (uptime.Hours == 1 ? "" : "s") + ", ";
+            if (uptime.Minutes != 0)
+                description += $"{uptime.Minutes} minute" + (uptime.Minutes == 1 ? "" : "s") + ", ";
+            description += $"{uptime.Seconds} seconde" + (uptime.Seconds > 1 ? "s" : "");
+
+            var builder = EmbedBuilderHelper.EmbedBuilderUptime(description);
+
             Reply("", builder);
         }
     }
