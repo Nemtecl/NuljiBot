@@ -61,7 +61,7 @@ namespace NuljiBot.Services
                     nbBots += 1;
                 else
                     nbHumans += 1;
-                nbOnline += (u.Status != UserStatus.DoNotDisturb ? 1 : 0);
+                nbOnline += (u.Status != UserStatus.Offline ? 1 : 0);
             }
 
             var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
