@@ -44,5 +44,34 @@ namespace NuljiBot.Services
 
             Reply("", builder);
         }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande membercount
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="user"></param>
+        public async void MembercountAsync(IGuild guild, IUser user)
+        {
+            var users = await guild.GetUsersAsync();
+            (var nbBots, var nbHumans, var nbOnline) = (0, 0, 0);
+
+            foreach (var u in users)
+            {
+                if (u.IsBot)
+                    nbBots += 1;
+                else
+                    nbHumans += 1;
+                nbOnline += (u.Status != UserStatus.DoNotDisturb ? 1 : 0);
+            }
+
+            var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
+                .WithTitle("Membercount command")
+                .AddField("Membres", users.Count, true)
+                .AddField("En ligne", nbOnline, true)
+                .AddField("Humains", nbHumans, true)
+                .AddField("Bots", nbBots, true);
+
+            Reply("", builder);
+        }
     }
 }
