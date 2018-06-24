@@ -31,5 +31,14 @@ namespace NuljiBot.Modules
             _service.UptimeAsync(Context.Channel, Context.User);
             await Task.Delay(0);
         }
+
+        [Command("Membercount")]
+        [Remarks("!membercount")]
+        [Summary("Retourne le nombre de membre du serveur")]
+        public async Task Membercount()
+        {
+            _service.MembercountAsync(Context.Guild, Context.User);
+            await Task.Delay(0);
+        }
     }
 }
