@@ -73,5 +73,29 @@ namespace NuljiBot.Services
 
             Reply("", builder);
         }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande serverinfo
+        /// </summary>
+        /// <param name="guild"></param>
+        public async void ServerinfoAsync(IGuild guild)
+        {
+            //TODO: méthode pour factoriser comptage user/bot/online
+
+            var owner = await guild.GetOwnerAsync();
+
+            var builder = new EmbedBuilder()
+                .WithTitle("Serverinfo command")
+                .AddField("Propriétaire", owner, true)
+                .AddField("Région", guild.VoiceRegionId, true)
+                .AddField("Roles", guild.Roles.ToString())
+                .WithTimestamp(guild.CreatedAt)
+                .WithFooter(footer =>
+                {
+                    footer.WithText($"ID: {guild.Id} | Serveur créé le");
+                });
+
+            Reply("", builder);
+        }
     }
 }
