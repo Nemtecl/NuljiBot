@@ -47,6 +47,7 @@ namespace NuljiBot.Modules
         public async Task Serverinfo()
         {
             _service.ServerinfoAsync(Context.Guild);
+            await Task.Delay(0);
         }
     }
 }
