@@ -40,5 +40,13 @@ namespace NuljiBot.Modules
             _service.MembercountAsync(Context.Guild, Context.User);
             await Task.Delay(0);
         }
+
+        [Command("Serverinfo")]
+        [Remarks("!serverinfo")]
+        [Summary("Retourne plusieurs informations sur le serveur")]
+        public async Task Serverinfo()
+        {
+            _service.ServerinfoAsync(Context.Guild);
+        }
     }
 }
