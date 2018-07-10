@@ -1,8 +1,8 @@
 ﻿using Discord;
-using Humanizer;
 using System;
 using System.Diagnostics;
 using NuljiBot.Helpers;
+using System.Linq;
 
 namespace NuljiBot.Services
 {
@@ -52,24 +52,13 @@ namespace NuljiBot.Services
         /// <param name="user"></param>
         public async void MembercountAsync(IGuild guild, IUser user)
         {
-            var users = await guild.GetUsersAsync();
-            (var nbBots, var nbHumans, var nbOnline) = (0, 0, 0);
-
-            foreach (var u in users)
-            {
-                if (u.IsBot)
-                    nbBots += 1;
-                else
-                    nbHumans += 1;
-                nbOnline += (u.Status != UserStatus.Offline ? 1 : 0);
-            }
 
             var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
                 .WithTitle("Membercount command")
-                .AddField("Membres", users.Count, true)
-                .AddField("En ligne", nbOnline, true)
-                .AddField("Humains", nbHumans, true)
-                .AddField("Bots", nbBots, true);
+                .AddField("Membres", await InformationHelper.GetNbUsers(guild), true)
+                .AddField("En ligne", await InformationHelper.GetNbOnline(guild), true)
+                .AddField("Humains", await InformationHelper.GetNbHumans(guild), true)
+                .AddField("Bots", await InformationHelper.GetNbBots(guild), true);
 
             Reply("", builder);
         }
@@ -80,19 +69,39 @@ namespace NuljiBot.Services
         /// <param name="guild"></param>
         public async void ServerinfoAsync(IGuild guild)
         {
-            //TODO: méthode pour factoriser comptage user/bot/online
-
-            var owner = await guild.GetOwnerAsync();
+            string sRoles = "";
+            foreach (var role in guild.Roles)
+            {
+                sRoles += role.Name;
+                if (!role.Equals(guild.Roles.Last()))
+                    sRoles += ", ";
+                
+            }
 
             var builder = new EmbedBuilder()
-                .WithTitle("Serverinfo command")
-                .AddField("Propriétaire", owner, true)
+                .WithThumbnailUrl(guild.IconUrl)
+                .AddField("Propriétaire", await guild.GetOwnerAsync(), true)
                 .AddField("Région", guild.VoiceRegionId, true)
-                .AddField("Roles", guild.Roles.ToString())
+                .AddField("Catégories de salon", (await guild.GetCategoriesAsync()).Count, true)
+                .AddField("Salons textuels", (await guild.GetTextChannelsAsync()).Count, true)
+                .AddField("Salons vocaux", (await guild.GetVoiceChannelsAsync()).Count, true)
+                .AddField("Membres", await InformationHelper.GetNbUsers(guild), true)
+                .AddField("En ligne", await InformationHelper.GetNbOnline(guild), true)
+                .AddField("Humains", await InformationHelper.GetNbHumans(guild), true)
+                .AddField("Bots", await InformationHelper.GetNbBots(guild), true)
+                .AddField("Roles", guild.Roles.Count, true)
+                .AddField("Liste des roles", sRoles)
                 .WithTimestamp(guild.CreatedAt)
+                .WithAuthor(author =>
+                {
+                    author
+                    .WithName(guild.Name)
+                    .WithIconUrl(guild.IconUrl);
+                })
                 .WithFooter(footer =>
                 {
-                    footer.WithText($"ID: {guild.Id} | Serveur créé le");
+                    footer
+                        .WithText($"ID: {guild.Id} | Serveur créé le");
                 });
 
             Reply("", builder);
