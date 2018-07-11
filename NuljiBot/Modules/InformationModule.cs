@@ -49,5 +49,14 @@ namespace NuljiBot.Modules
             _service.ServerinfoAsync(Context.Guild);
             await Task.Delay(0);
         }
+
+        [Command("Whois")]
+        [Remarks("!whois [username]")]
+        [Summary("Retourne")]
+        public async Task Whois([Remainder] string username = null)
+        {
+            _service.WhoisAsync(Context.Guild, Context.User, username);
+            await Task.Delay(0);
+        }
     }
 }

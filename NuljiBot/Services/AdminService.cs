@@ -52,15 +52,16 @@ namespace NuljiBot.Services
         /// <param name="guild"></param>
         public async void ServerinviteAsync(IGuild guild, IUser user)
         {
-            // Todo : gestion si inviteLink null
-            var invite = (await guild.GetInvitesAsync()).Where(o => !o.IsTemporary).First();
+            var invites = (await guild.GetInvitesAsync());
 
-            if (invite == null)
+            if (invites.Count == 0)
             {
                 Reply($"{user.Mention} Veuillez créer un lien d'invitation permanent pour ce serveur");
             }
             else
             {
+                var invite = invites.Where(o => !o.IsTemporary).First();
+
                 var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
                     .WithTitle("Serverinvite command")
                     .AddField("Lien d'invitation", invite.Url);

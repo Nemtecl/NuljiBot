@@ -106,5 +106,27 @@ namespace NuljiBot.Services
 
             Reply("", builder);
         }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande whois
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <param name="user"></param>
+        /// <param name="username"></param>
+        public async void WhoisAsync(IGuild guild, IUser user, string username)
+        {
+            var currentUsers = (await guild.GetUsersAsync());
+            // TODO: check si aucun user avant de faire le first
+            IUser currentUser = (username == null ? user : currentUsers.Where(o => o.Username.Contains(username)).First());
+
+            if (currentUser == null)
+            {
+                Reply($"{user.Mention} Impossible de trouver l'utilisateur {username} :zipper_mouth:");
+            }
+            else
+            {
+                Reply($"{currentUser.Mention} TODO");
+            }
+        }
     }
 }
