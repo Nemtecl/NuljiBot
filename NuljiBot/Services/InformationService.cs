@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using NuljiBot.Helpers;
 using System.Linq;
+using Discord.WebSocket;
 
 namespace NuljiBot.Services
 {
@@ -73,9 +74,8 @@ namespace NuljiBot.Services
             foreach (var role in guild.Roles)
             {
                 sRoles += role.Name;
-                if (!role.Equals(guild.Roles.Last()))
+                if (guild.Roles.Count != 1 && !role.Equals(guild.Roles.Last()))
                     sRoles += ", ";
-                
             }
 
             var builder = new EmbedBuilder()
@@ -95,13 +95,13 @@ namespace NuljiBot.Services
                 .WithAuthor(author =>
                 {
                     author
-                    .WithName(guild.Name)
-                    .WithIconUrl(guild.IconUrl);
+                        .WithName(guild.Name)
+                        .WithIconUrl(guild.IconUrl);
                 })
                 .WithFooter(footer =>
                 {
                     footer
-                        .WithText($"ID: {guild.Id} | Serveur créé le");
+                    .WithText($"ID: {guild.Id} | Serveur créé le");
                 });
 
             Reply("", builder);
@@ -115,17 +115,61 @@ namespace NuljiBot.Services
         /// <param name="username"></param>
         public async void WhoisAsync(IGuild guild, IUser user, string username)
         {
+            // Recherche de l'utilisateur
+            // Si aucun username a été indiqué, on choisi l'utilisateur ayant lancé la commande
             var currentUsers = (await guild.GetUsersAsync());
-            // TODO: check si aucun user avant de faire le first
-            IUser currentUser = (username == null ? user : currentUsers.Where(o => o.Username.Contains(username)).First());
+            IUser currentUser = (username == null ? user : currentUsers
+                .Where(o => o.Username.ToLower().Contains(username.ToLower())).FirstOrDefault());
 
+            // Si l'username indiqué n'existe pas
             if (currentUser == null)
             {
                 Reply($"{user.Mention} Impossible de trouver l'utilisateur {username} :zipper_mouth:");
             }
             else
             {
-                Reply($"{currentUser.Mention} TODO");
+                SocketGuildUser currentGuildUser = (SocketGuildUser) (await guild.GetUserAsync(currentUser.Id));
+                var sRoles = "";
+                foreach (var role in currentGuildUser.Roles)
+                {
+                    sRoles += role.Mention;
+                    if (currentGuildUser.Roles.Count != 1 && !role.Equals(currentGuildUser.Roles.Last()))
+                        sRoles += ", ";
+                }
+
+                var guildPermissionsList = currentGuildUser.GuildPermissions.ToList();
+                var sPermissions = "";
+                foreach (var permission in guildPermissionsList)
+                {
+                    sPermissions += permission.ToString();
+                    if (guildPermissionsList.Count != 1 && !permission.Equals(guildPermissionsList.Last()))
+                        sPermissions += ", ";
+                } 
+
+                var builder = new EmbedBuilder()
+                    .WithCurrentTimestamp()
+                    .WithThumbnailUrl(currentUser.GetAvatarUrl())
+                    .WithDescription(currentUser.Mention)
+                    .AddField("Statut", currentUser.Status, true)
+                    .AddField("Date d'arrivée", currentGuildUser.JoinedAt, true)
+                    .AddField("Activité", currentUser.Activity == null ? "Aucune" : currentUser.Activity.Type + " " +currentUser.Activity.Name, true)
+                    .AddField("Date d'inscription", currentUser.CreatedAt, true)
+                    .AddField("Roles", sRoles)
+                    .AddField("Permissions", sPermissions)
+                    .WithAuthor(author =>
+                    {
+                        author
+                            .WithName(currentUser.ToString())
+                            .WithIconUrl(currentUser.GetAvatarUrl());
+                    })
+                    .WithFooter(footer =>
+                    {
+                        footer
+                            .WithText($"ID: {currentUser.Id}");
+                    });
+                // AKNOLEDGEMENT ??
+
+                Reply("", builder);
             }
         }
     }
