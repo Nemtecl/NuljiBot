@@ -1,5 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using NuljiBot.Helpers;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NuljiBot.Services
@@ -13,7 +15,7 @@ namespace NuljiBot.Services
         /// <param name="channel"></param>
         /// <param name="n"></param>
         /// <returns></returns>
-        public async Task ClearMessagesAsync(IGuild guild, IMessageChannel channel, IUser user, int n)
+        public async void ClearMessagesAsync(IGuild guild, IMessageChannel channel, IUser user, int n)
         {
             var eb = new EmbedBuilder();
             eb.WithTitle("Clear command")
@@ -42,6 +44,30 @@ namespace NuljiBot.Services
             await (channel as SocketTextChannel).DeleteMessagesAsync(messages);
 
             Reply($"{user.Mention} Suppression des messages ...");
+        }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande serverinvite
+        /// </summary>
+        /// <param name="guild"></param>
+        public async void ServerinviteAsync(IGuild guild, IUser user)
+        {
+            var invites = (await guild.GetInvitesAsync());
+
+            if (invites.Count == 0)
+            {
+                Reply($"{user.Mention} Veuillez créer un lien d'invitation permanent pour ce serveur");
+            }
+            else
+            {
+                var invite = invites.Where(o => !o.IsTemporary).First();
+
+                var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
+                    .WithTitle("Serverinvite command")
+                    .AddField("Lien d'invitation", invite.Url);
+
+                Reply("", builder);
+            }
         }
     }
 }
