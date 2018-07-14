@@ -4,6 +4,7 @@ using System.Diagnostics;
 using NuljiBot.Helpers;
 using System.Linq;
 using Discord.WebSocket;
+using Humanizer;
 
 namespace NuljiBot.Services
 {
@@ -141,7 +142,7 @@ namespace NuljiBot.Services
                 var sPermissions = "";
                 foreach (var permission in guildPermissionsList)
                 {
-                    sPermissions += permission.ToString();
+                    sPermissions += permission.Humanize();
                     if (guildPermissionsList.Count != 1 && !permission.Equals(guildPermissionsList.Last()))
                         sPermissions += ", ";
                 } 
@@ -167,7 +168,6 @@ namespace NuljiBot.Services
                         footer
                             .WithText($"ID: {currentUser.Id}");
                     });
-                // AKNOLEDGEMENT ??
 
                 Reply("", builder);
             }
