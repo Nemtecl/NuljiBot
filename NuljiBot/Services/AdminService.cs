@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using NuljiBot.Helpers;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -74,7 +75,7 @@ namespace NuljiBot.Services
         /// Méthode de prise en charge de la commande mute
         /// </summary>
         /// <param name="user"></param>
-        public async void MuteAsync(IUser user)
+        public async Task MuteAsync(IUser user)
         {
             try
             {
@@ -91,7 +92,7 @@ namespace NuljiBot.Services
         /// Méthode de prise en charge de la commande unmute
         /// </summary>
         /// <param name="user"></param>
-        public async void UnmuteAsync(IUser user)
+        public async Task UnmuteAsync(IUser user)
         {
             try
             {

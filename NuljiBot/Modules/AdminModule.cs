@@ -44,8 +44,7 @@ namespace NuljiBot.Modules
         [RequireUserPermission(GuildPermission.MuteMembers)]
         public async Task Mute([Remainder] IGuildUser user)
         {
-            _service.MuteAsync(user);
-            await Task.Delay(0);
+            await _service.MuteAsync(user);
         }
 
         [Command("unmute")]
@@ -55,8 +54,7 @@ namespace NuljiBot.Modules
         [RequireUserPermission(GuildPermission.MuteMembers)]
         public async Task Unmute([Remainder] IGuildUser user)
         {
-            _service.UnmuteAsync(user);
-            await Task.Delay(0);
+            await _service.UnmuteAsync(user);
         }
     }
 }
