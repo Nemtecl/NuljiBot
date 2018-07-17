@@ -69,5 +69,39 @@ namespace NuljiBot.Services
                 Reply("", builder);
             }
         }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande mute
+        /// </summary>
+        /// <param name="user"></param>
+        public async void MuteAsync(IUser user)
+        {
+            try
+            {
+                await (user as IGuildUser).ModifyAsync(o => o.Mute = true);
+                Reply($"{user.Mention} est sous sourdine");
+            }
+            catch
+            {
+                Reply($"Problème lors de la mise en sourdine de {user}");
+            }
+        }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande unmute
+        /// </summary>
+        /// <param name="user"></param>
+        public async void UnmuteAsync(IUser user)
+        {
+            try
+            {
+                await (user as IGuildUser).ModifyAsync(x => x.Mute = false);
+                Reply($"{user.Mention} n'est plus sous sourdine");
+            }
+            catch
+            {
+                Reply($"Problème lors du retrait de la sourdine de {user}");
+            }
+        }
     }
 }
