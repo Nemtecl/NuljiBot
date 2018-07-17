@@ -36,5 +36,27 @@ namespace NuljiBot.Modules
             _service.ServerinviteAsync(Context.Guild, Context.User);
             await Task.Delay(0);
         }
+
+        [Command("mute")]
+        [Remarks("!mute [user]")]
+        [Summary("Met sous sourdine un utilisateur")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.MuteMembers)]
+        public async Task Mute([Remainder] IGuildUser user)
+        {
+            _service.MuteAsync(user);
+            await Task.Delay(0);
+        }
+
+        [Command("unmute")]
+        [Remarks("!unmute [user]")]
+        [Summary("Retire la sourdine d'un utilisateur")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.MuteMembers)]
+        public async Task Unmute([Remainder] IGuildUser user)
+        {
+            _service.UnmuteAsync(user);
+            await Task.Delay(0);
+        }
     }
 }
