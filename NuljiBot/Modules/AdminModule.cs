@@ -86,5 +86,35 @@ namespace NuljiBot.Modules
         {
             await _service.SetnickAsync(Context.Guild, user, nickname);
         }
+
+        [Command("Kick")]
+        [Remarks("!kick [user] [reason]")]
+        [Summary("Kick un utilisateur du serveur")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        public async Task Kick(IUser user, [Remainder] string reason = null)
+        {
+            await _service.KickAsync(Context.Guild, user, reason);
+        }
+
+        [Command("Ban")]
+        [Remarks("!ban [user] [reason]")]
+        [Summary("Ban un utilisateur du serveur")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        public async Task Ban(IUser user, [Remainder] string reason = null)
+        {
+            await _service.BanAsync(Context.Guild, user, reason);
+        }
+
+        [Command("Unban")]
+        [Remarks("!unban [username] [reason]")]
+        [Summary("Déban un utilisateur du serveur")]
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [RequireUserPermission(GuildPermission.KickMembers)]
+        public async Task Unban([Remainder] string username)
+        {
+            await _service.UnbanAsync(Context.Guild, username);
+        }
     }
 }

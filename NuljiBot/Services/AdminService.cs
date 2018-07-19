@@ -147,6 +147,13 @@ namespace NuljiBot.Services
             }
         }
 
+        /// <summary>
+        /// Méthode de prise en charge de la commande setnick
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <param name="user"></param>
+        /// <param name="nickname"></param>
+        /// <returns></returns>
         public async Task SetnickAsync(IGuild guild, IUser user, string nickname = null)
         {
             try
@@ -156,6 +163,73 @@ namespace NuljiBot.Services
             catch
             {
                 Reply($"Problème lors de l'utilisation de la commande !setnick {user.Mention} {nickname}");
+            }
+        }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande kick
+        /// </summary>
+        /// <param name="guil"></param>
+        /// <param name="user"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public async Task KickAsync(IGuild guild, IUser user, string reason = null)
+        {
+            try
+            {
+                await (user as IGuildUser).KickAsync(reason);
+            }
+            catch
+            {
+                Reply($"Problème lors de l'utilisation de la commande !kick {user.Mention} {reason}");
+            }
+        }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande ban
+        /// </summary>
+        /// <param name="guil"></param>
+        /// <param name="user"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public async Task BanAsync(IGuild guild, IUser user, string reason = null)
+        {
+            try
+            {
+                await guild.AddBanAsync(user, 0, reason);
+            }
+            catch
+            {
+                Reply($"Problème lors de l'utilisation de la commande !ban {user.Mention} {reason}");
+            }
+        }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande unban
+        /// </summary>
+        /// <param name="guild"></param>
+        /// <param name="user"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
+        public async Task UnbanAsync(IGuild guild, string username)
+        {
+            var banList = await guild.GetBansAsync();
+            IUser currentUser = null;
+            foreach (var u in banList)
+            {
+                if (u.User.Username.Contains(username))
+                {
+                    currentUser = u.User;
+                }
+            }
+
+            try
+            {
+                await guild.RemoveBanAsync(currentUser);
+            }
+            catch
+            {
+                Reply($"Problème lors de l'utilisation de la commande !ban {username}");
             }
         }
     }
