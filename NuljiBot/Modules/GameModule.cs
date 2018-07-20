@@ -22,7 +22,7 @@ namespace NuljiBot.Modules
         public async Task FlipCoin()
         {
             _service.FlipCoinAsync(Context.Channel, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Roll")]
@@ -31,7 +31,7 @@ namespace NuljiBot.Modules
         public async Task Roll([Remainder] int n = 0)
         {
             _service.RollAsync(Context.Channel, Context.User, n);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Rps")]
@@ -40,7 +40,7 @@ namespace NuljiBot.Modules
         public async Task Rps([Remainder] string choice = null)
         {
             _service.RpsAsync(Context.Channel, Context.User, choice);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
     }
 }

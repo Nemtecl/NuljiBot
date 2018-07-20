@@ -24,7 +24,7 @@ namespace NuljiBot.Modules
         public async Task ClearMessages([Remainder] int n = 0)
         {
             _service.ClearMessagesAsync(Context.Guild, Context.Channel, Context.User, n);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Serverinvite")]
@@ -34,7 +34,7 @@ namespace NuljiBot.Modules
         public async Task Serverinvite()
         {
             _service.ServerinviteAsync(Context.Guild, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("mute")]

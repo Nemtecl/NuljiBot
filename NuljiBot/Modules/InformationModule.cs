@@ -20,7 +20,7 @@ namespace NuljiBot.Modules
         public async Task Help()
         {
             _service.HelpAsync(Context.Channel, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Uptime")]
@@ -29,7 +29,7 @@ namespace NuljiBot.Modules
         public async Task Uptime()
         {
             _service.UptimeAsync(Context.Channel, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Membercount")]
@@ -38,7 +38,7 @@ namespace NuljiBot.Modules
         public async Task Membercount()
         {
             _service.MembercountAsync(Context.Guild, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Serverinfo")]
@@ -47,7 +47,7 @@ namespace NuljiBot.Modules
         public async Task Serverinfo()
         {
             _service.ServerinfoAsync(Context.Guild);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Whois")]
@@ -56,7 +56,7 @@ namespace NuljiBot.Modules
         public async Task Whois([Remainder] string username = null)
         {
             _service.WhoisAsync(Context.Guild, Context.User, username);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
     }
 }
