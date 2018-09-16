@@ -18,13 +18,13 @@ namespace NuljiBot.Services
         /// <param name="channel"></param>
         /// <param name="user"></param>
         /// <param name="date"></param>
-        public async void AlmanaxAsync(IMessageChannel channel, IUser user, string date = null)
+        public void AlmanaxAsync(IMessageChannel channel, IUser user, string date = null)
         {
 
             if (date == null)
             {
                 date = DateTime.Today.Day.ToString("D2") + "/" + DateTime.Today.Month.ToString("D2");
-            }
+            } 
 
             Almanax almanax = JsonHelper.GetAlmanax(date);
             var builder = EmbedBuilderHelper.EmbedBuilderInformation(user)
