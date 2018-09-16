@@ -1,5 +1,6 @@
 ﻿using Discord.Commands;
 using NuljiBot.Services;
+using System;
 using System.Threading.Tasks;
 
 namespace NuljiBot.Modules
@@ -7,20 +8,15 @@ namespace NuljiBot.Modules
     public sealed class InformationModule : NuljiModule
     {
         private readonly InformationService _service;
+        private readonly CommandService _commands;
+        private readonly IServiceProvider _provider;
 
-        public InformationModule(InformationService service)
+        public InformationModule(InformationService service, CommandService commands, IServiceProvider provider)
         {
             _service = service;
             _service.SetParentModule(this);
-        }
-
-        [Command("Help")]
-        [Remarks("!help")]
-        [Summary("Commande d'aide")]
-        public async Task Help()
-        {
-            _service.HelpAsync(Context.Channel, Context.User);
-            await Task.Delay(0);
+            _commands = commands;
+            _provider = provider;
         }
 
         [Command("Uptime")]
@@ -29,7 +25,7 @@ namespace NuljiBot.Modules
         public async Task Uptime()
         {
             _service.UptimeAsync(Context.Channel, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Membercount")]
@@ -38,7 +34,7 @@ namespace NuljiBot.Modules
         public async Task Membercount()
         {
             _service.MembercountAsync(Context.Guild, Context.User);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Serverinfo")]
@@ -47,16 +43,25 @@ namespace NuljiBot.Modules
         public async Task Serverinfo()
         {
             _service.ServerinfoAsync(Context.Guild);
-            await Task.Delay(0);
+            await Task.CompletedTask;
         }
 
         [Command("Whois")]
         [Remarks("!whois [username]")]
-        [Summary("Retourne")]
+        [Summary("Retourne plusieurs information sur un utilisateur")]
         public async Task Whois([Remainder] string username = null)
         {
             _service.WhoisAsync(Context.Guild, Context.User, username);
-            await Task.Delay(0);
+            await Task.CompletedTask;
+        }
+
+        [Command("help")]
+        [Remarks("!help")]
+        [Summary("Retourne des informations sur l'ensemble des commandes existantes")]
+        public async Task Help()
+        {
+            _service.HelpAsync(_commands, _provider, Context.Guild, Context.User);
+            await Task.CompletedTask;
         }
     }
 }

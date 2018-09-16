@@ -6,11 +6,11 @@ namespace NuljiBot.Helpers
 {
     public static class EmbedBuilderHelper
     {
-        public static EmbedBuilder EmbedBuilderUptime(string description)
+        public static EmbedBuilder EmbedBuilderUptime(string description, string title = "Uptime")
         {
             var processStartTime = Process.GetCurrentProcess().StartTime;
             var builder = new EmbedBuilder()
-                .WithTitle("Uptime")
+                .WithTitle(title)
                 .WithDescription($"{description}")
                 .WithFooter(footer =>
                 {

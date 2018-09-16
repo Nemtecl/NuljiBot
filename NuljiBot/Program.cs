@@ -40,7 +40,8 @@ namespace NuljiBot
             services
                 .AddSingleton<GameService>()
                 .AddSingleton<AdminService>()
-                .AddSingleton<InformationService>();
+                .AddSingleton<InformationService>()
+                .AddSingleton<DofusService>();
 
             return services.BuildServiceProvider();
         }

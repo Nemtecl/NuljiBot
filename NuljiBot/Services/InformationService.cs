@@ -5,6 +5,7 @@ using NuljiBot.Helpers;
 using System.Linq;
 using Discord.WebSocket;
 using Humanizer;
+using Discord.Commands;
 
 namespace NuljiBot.Services
 {
@@ -13,15 +14,6 @@ namespace NuljiBot.Services
     /// </summary>
     public sealed class InformationService : NuljiService
     {
-        /// <summary>
-        /// Méthode de prise en charge de la commande help
-        /// </summary>
-        /// <param name="channel"></param>
-        /// <param name="user"></param>
-        public void HelpAsync(IMessageChannel channel, IUser user)
-        {
-            Reply($"{user.Mention} Not implemented yet ! :middle_finger: ");
-        }
 
         /// <summary>
         /// Méthode de prise en charge de la commande uptime
@@ -171,6 +163,24 @@ namespace NuljiBot.Services
 
                 Reply("", builder);
             }
+        }
+
+        /// <summary>
+        /// Méthode de prise en charge de la commande help
+        /// </summary>
+        /// <param name="commands"></param>
+        /// <param name="provider"></param>
+        /// <param name="guild"></param>
+        /// <param name="user"></param>
+        public void HelpAsync(CommandService commands, IServiceProvider provider, IGuild guild, IUser user)
+        {
+            var builder = EmbedBuilderHelper.EmbedBuilderUptime(null, "Help");
+            foreach (var module in commands.Modules)
+            {
+
+            }
+
+            Reply($"", builder);
         }
     }
 }
