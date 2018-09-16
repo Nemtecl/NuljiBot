@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NuljiBot.Helpers.SharedClass;
 using System.Collections.Generic;
 using System.IO;
 
@@ -81,6 +83,20 @@ namespace NuljiBot.Helpers
         {
             DataType data = JsonConvert.DeserializeObject<DataType>(File.ReadAllText("config.json"));
             return data.EmbedBuilder.Author.Name;
+        }
+
+        public static Almanax GetAlmanax(string date)
+        {
+            JObject json = JObject.Parse(File.ReadAllText("almanax.json"));
+            Almanax almanax = new Almanax
+            {
+                ItemImage = (int)json[date]["itemImage"],
+                Quest = (string)json[date]["quest"],
+                Type = (string)json[date]["type"],
+                Effect = (string)json[date]["effect"],
+                Offering = (string)json[date]["offering"],
+            };
+            return almanax;
         }
     }
 }
